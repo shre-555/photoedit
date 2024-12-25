@@ -1,95 +1,26 @@
-// // src/components/ImageEditor.jsx
-// import React, { useState, useRef } from 'react';
-// import { Stage, Layer, Image } from 'react-konva';
-// import useImage from 'use-image';
-
-// const ImageEditor = () => {
-//   const [image, setImage] = useState(null);
-//   const [uploadedImage, setUploadedImage] = useState(null);
-//   const [imageSrc, setImageSrc] = useState(null);
-//   const imageRef = useRef(null);
-
-//   // Load image using use-image hook
-//   const [img] = useImage(imageSrc);
-
-//   // Handle file upload and set the image to state
-//   const handleFileUpload = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         setImageSrc(reader.result);
-//       };
-//       reader.readAsDataURL(file);
-//       setUploadedImage(file);
-//     }
-//   };
-
-//   // Handle rotation of the image
-//   const rotateImage = () => {
-//     if (imageRef.current) {
-//       imageRef.current.rotation(imageRef.current.rotation() + 90); // Rotate 90 degrees
-//     }
-//   };
-
-//   // Handle resizing of the image
-//   const resizeImage = () => {
-//     if (imageRef.current) {
-//       imageRef.current.scaleX(imageRef.current.scaleX() * 1.2);
-//       imageRef.current.scaleY(imageRef.current.scaleY() * 1.2);
-//     }
-//   };
-
-//   // Handle applying a grayscale filter
-//   const applyGrayscale = () => {
-//     if (imageRef.current) {
-//       imageRef.current.cache();
-//       imageRef.current.filters([Konva.Filters.Grayscale]);
-//       imageRef.current.applyFilters();
-//     }
-//   };
-
-//   return (
-//     <div style={{ textAlign: 'center' }}>
-//       <h1>Image Editor</h1>
-//       <input type="file" onChange={handleFileUpload} />
-//       <br />
-//       <Stage width={800} height={600}>
-//         <Layer>
-//           {img && (
-//             <Image
-//               ref={imageRef}
-//               image={img}
-//               x={100}
-//               y={100}
-//               width={img.width}
-//               height={img.height}
-//             />
-//           )}
-//         </Layer>
-//       </Stage>
-//       <br />
-//       <button onClick={rotateImage}>Rotate</button>
-//       <button onClick={resizeImage}>Resize</button>
-//       <button onClick={applyGrayscale}>Grayscale</button>
-//     </div>
-//   );
-// };
-
-// export default ImageEditor;
-
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import './ImageEdit.css'; // Import the external CSS file
-
+import './ImageEdit.css'; 
 function DropzoneComponent(props) {
   const [files, setFiles] = useState([]);
+  const [isUploaded, setIsUploaded] = useState(false); 
 
   const onDrop = useCallback(acceptedFiles => {
-    setFiles(acceptedFiles.map(file => Object.assign(file, {
-      preview: URL.createObjectURL(file)
-    })));
+    setFiles(
+      acceptedFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      }))
+    );
+    setIsUploaded(true); 
   }, []);
+
+
+/*onDrop: This is a function that gets called when files are dragged and dropped into the drop zone.
+acceptedFiles: This is the array of files that the user has dropped into the zone.
+URL.createObjectURL(file): This creates a temporary URL for the file so it can be displayed in the browser as an image preview.
+setFiles: The setFiles function updates the files state with the new file, adding a preview URL to each file.
+setIsUploaded: This sets isUploaded to true, marking that a file has been uploaded.*/
+
 
   const {
     getRootProps,
@@ -102,7 +33,14 @@ function DropzoneComponent(props) {
     accept: 'image/jpeg, image/png'
   });
 
-  // Dynamically determine the class name based on drag state
+/* getRootProps: This function provides props that you need to apply to the root element of the drop zone (the area where you drop files).
+getInputProps: This provides props to the input element, making it possible to select files via the file picker (useful for users who don't want to drag and drop).
+isDragActive: A boolean indicating whether a file is currently being dragged over the drop zone.
+isDragAccept: A boolean indicating whether the dragged file is an accepted type (i.e., jpeg or png).
+isDragReject: A boolean indicating whether the dragged file is rejected (not of type jpeg or png). */
+
+
+  
   const classNames = useMemo(() => {
     let classes = 'dropzone';
     if (isDragActive) classes += ' active';
@@ -125,16 +63,36 @@ function DropzoneComponent(props) {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  // Reset function to clear files and show the dropzone again
+  const handleReset = () => {
+    setFiles([]);
+    setIsUploaded(false);
+  };
+
   return (
+    <>
     <section>
-      <div {...getRootProps({ className: classNames })}>
-        <input {...getInputProps()} />
-        <div>Drag and drop your images here.</div>
-      </div>
-      <aside className="dropzone-thumbs">
+      {/* Conditionally render the dropzone if a file hasn't been uploaded */}
+      {!isUploaded && (
+        <div {...getRootProps({ className: classNames })}>
+          <input {...getInputProps()} />
+          <div>Drag and drop your images here.</div>
+        </div>
+      )}
+
+      {/* Render thumbnails if files are uploaded */}
+      <div className="dropzone-thumbs">
         {thumbs}
-      </aside>
-    </section>
+      </div>
+    </section> 
+    {/* Show Reset button if file is uploaded */}
+      {isUploaded && (
+        <button onClick={handleReset} className="reset-button">
+          Upload Another File
+        </button>
+      )}
+    </>
+    
   );
 }
 
