@@ -58,14 +58,13 @@ section {
 .dropzone-thumbs {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20%;
   position: absolute;
-  right: 7%;
 }
 
 .dropzone-thumbs img {
-  max-width: 99%;
-  max-height: 99%;
+  max-width: 600px;
+  max-height: 450px;
+  object-fit: contain
 }
 
 /* Button styles inside the dropzone */
