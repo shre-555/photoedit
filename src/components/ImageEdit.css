@@ -1,0 +1,42 @@
+/* Base styles for the drop zone */
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-width: 2px;
+    border-radius: 2px;
+    border-color: #eeeeee;
+    border-style: dashed;
+    background-color: #fafafa;
+    color: #bdbdbd;
+    transition: border .3s ease-in-out;
+  }
+  
+  /* Active styles (when a file is being dragged over the dropzone) */
+  .dropzone.active {
+    border-color: #2196f3;
+  }
+  
+  /* Accepted file styles (when the file type is correct) */
+  .dropzone.accept {
+    border-color: #00e676;
+  }
+  
+  /* Rejected file styles (when the file type is incorrect) */
+  .dropzone.reject {
+    border-color: #ff1744;
+  }
+  
+  /* Thumbnail image styles */
+  .dropzone-thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  .dropzone-thumbs img {
+    max-width: 100px;
+    margin: 5px;
+  }
+  
