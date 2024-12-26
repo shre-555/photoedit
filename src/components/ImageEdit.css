@@ -43,3 +43,19 @@ nav {
     outline: 4px auto -webkit-focus-ring-color;
   }
   
+  .sidepanel {
+    position: absolute;
+    top: 20%;
+    left: 1%;
+    background-color: #1a1a1a;
+  }
+
+  .mainpanel {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    position: relative;
+    align-items: stretch; /* Align children to the full width */
+    justify-content: space-between; /* Space out children evenly */
+    gap: 1em; /* Add space between items */
+    padding: 1em; /* Optional: Add padding around the content */
+  }

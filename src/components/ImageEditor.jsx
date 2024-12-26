@@ -24,6 +24,22 @@ function NavigationBar(){
     )
 }
 
+function SidePanel(){
+    return(
+        <>
+            <aside className='sidepanel'>
+                <div className='mainpanel'>
+                    <button id="crop">
+                        <img src="Crop 01.svg" alt="crop"/>
+                    </button>
+                    <button>
+                        <img src="Adjust.svg" alt="adjust"/>
+                    </button>
+                </div>
+            </aside>
+        </>
+    )
+}
 
 function ImageEditor(){
     return(
@@ -31,6 +47,7 @@ function ImageEditor(){
     <NavigationBar />
     <br/>
     <Dropzone />
+    <SidePanel />
     </>
     );
 }
