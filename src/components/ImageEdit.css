@@ -1,6 +1,20 @@
 nav {
+    display: flex;
     position: absolute;
     top: 1%;
+    left: 2%;
+    width: 98%;
+    height: 7%;
+}
+
+.options {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: start;
+    width: 100%;
+    margin-top: 0px;
+    right: 10%
 }
 
 /* Button styles inside the dropzone */
